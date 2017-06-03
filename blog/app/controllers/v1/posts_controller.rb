@@ -2,14 +2,14 @@ class V1::PostsController < ApplicationController
   def index
     @posts = Post.all
 
-    render json: @posts, status: :ok
+    render :index, status: :ok
   end
 
   def create
     @post = Post.new(post_params)
 
     @post.save
-    render json: @post, status: :created
+    render :create, status: :created
   end
 
   def destroy
