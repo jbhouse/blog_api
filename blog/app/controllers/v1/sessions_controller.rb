@@ -1,10 +1,10 @@
 class V1::SessionsController < ApplicationController
   def create
-    user = User.where(email: params[:email]).first
+    @user = User.where(email: params[:email]).first
 
-    if user&.valid_password?(params[:password])
+    if @user&.valid_password?(params[:password])
       # ^ this is shorthand for, if user & user.valid_password?
-      render json: user.as_json(only: [:email, :authentication_token]), status: :created
+      render :create, status: :created
     else
       head(:unauthorized)
     end
