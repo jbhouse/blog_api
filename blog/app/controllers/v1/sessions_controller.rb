@@ -1,4 +1,9 @@
 class V1::SessionsController < ApplicationController
+  def show
+    current_user ? head(:ok) : head(:unauthorized)
+    # this checks to see if the token in local storage is a valid token
+  end
+
   def create
     @user = User.where(email: params[:email]).first
 
@@ -11,12 +16,16 @@ class V1::SessionsController < ApplicationController
   end
 
   def destroy
-    current_user&.authentication_token = nil
-    if current_user.save
+    if make_token_nill && current_user.save
       head (:ok)
     else
       head(:unauthorized)
     end
   end
 
+  private
+
+  def make_token_nill
+    current_user&.authentication_token = nil
+  end
 end
