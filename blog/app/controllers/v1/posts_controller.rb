@@ -6,15 +6,16 @@ class V1::PostsController < ApplicationController
   end
 
   def create
-    @post = Post.new(post_params)
+    @post = current_user.posts.build(post_params)
+    # this will automatically add a user ID to the created post, based on the current_user
 
     @post.save
     render :create, status: :created
   end
 
   def destroy
-    @post = Post.where(id: params[:id]).first
-    if contact.destroy
+    @post = current_user.posts.where(id: params[:id]).first
+    if post.destroy
       head(:ok)
     else
       head(:unprocessable_entity)
